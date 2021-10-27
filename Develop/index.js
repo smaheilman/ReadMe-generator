@@ -1,29 +1,21 @@
 // TODO: Include packages needed for this application
 const inquirer = require('inquirer');
 const fs = require ('fs');
+const generateMarkdown = require('./utils/generateMarkdown')
 
 // TODO: Create an array of questions for user input
-const questions = () => {
+const questions = questionData => {
+
     return inquirer.prompt([
         {
             type: 'input',
-            name: 'repoName',
-            message: 'Please enter the name of the repository you want the README for.'
-        },
-        {
-            type: 'input',
-            name: 'porjectTitle',
+            name: 'title',
             message: 'Please enter the name of your project'
         },
         {
             type: 'input',
             name: 'description',
             message: 'Please describe your project'
-        },
-        {
-            type: 'input',
-            name: 'tOfC',
-            message: 'Please enter a list of tabel of contents for your project'
         },
         {
             type: 'input',
@@ -45,14 +37,45 @@ const questions = () => {
             name: 'license',
             message: 'Please choose a license for your project'
         },
+        {
+            type: 'checkbox',
+            name: 'tOfC',
+            message: 'Please select items in your table of contents',
+            choices: ['Description', 'Installation', ' Usage', 'Credits', 'Liscense']
+        },
+        {
+         type: 'input',
+         name: 'email',
+         message: 'Please enter an email address and/or gitHub profile for questions on your project.'   
+        }
     ]);
 };
 
+
+
+
 // TODO: Create a function to write README file
-function writeToFile(fileName, data) {}
+function writeToFile(fileContent) {
+    fs.writeFile('README.md', fileContent, err => {
+        if(err) {
+            return console.log(err);
+        }
+
+        console.log('Page Created!')
+    });
+}
 
 // TODO: Create a function to initialize app
-function init() {}
+function init() { 
+    questions()
+    .then(questionData => {
+        const readMePage = generateMarkdown(questionData);
+    })
+    .then(readMePage => {
+        return writeToFile(readMePage);
+        
+    })
+}
 
 // Function call to initialize app
 init();
