@@ -41,7 +41,7 @@ const questions = questionData => {
             type: 'checkbox',
             name: 'tOfC',
             message: 'Please select items in your table of contents',
-            choices: ['Description', 'Installation', ' Usage', 'Credits', 'Liscense']
+            choices: ['Description', 'Installation', 'Usage', 'Credits', 'Liscense']
         },
         {
          type: 'input',
@@ -70,10 +70,7 @@ function init() {
     questions()
     .then(questionData => {
         const readMePage = generateMarkdown(questionData);
-    })
-    .then(readMePage => {
-        return writeToFile(readMePage);
-        
+        writeToFile(readMePage);
     })
 }
 
